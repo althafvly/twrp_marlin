@@ -305,7 +305,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/google/marlin/init.common.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.rc \
     device/google/marlin/init.common.usb.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.usb.rc \
-    device/google/marlin/init.recovery.usb.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.recovery.usb.rc \
     device/google/marlin/init.common.nanohub.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.nanohub.rc \
     device/google/marlin/ueventd.common.rc:$(TARGET_COPY_OUT_VENDOR)/ueventd.rc \
     device/google/marlin/init.radio.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.radio.sh \
@@ -324,7 +323,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Write Manufacturer & Model information in created media files.
 # IMPORTANT: ONLY SET THIS PROPERTY TO TRUE FOR PUBLIC DEVICES
-ifneq ($(filter aosp_sailfish% sailfish% aosp_marlin% marlin% omni_marlin% omni_sailfish%, $(TARGET_PRODUCT)),)
+ifneq ($(filter aosp_sailfish% sailfish% aosp_marlin% marlin%, $(TARGET_PRODUCT)),)
 PRODUCT_PROPERTY_OVERRIDES += \
     media.recorder.show_manufacturer_and_model=true
 else
