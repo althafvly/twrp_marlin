@@ -26,9 +26,11 @@ cc_library {
     cflags: [
         "-Wall",
         "-Werror",
+        "-Wunused-variable",
     ],
     srcs: [
         "gpt-utils.cpp",
+        "sparse_crc32.cpp",
     ],
     owner: "qti",
     header_libs: [
@@ -36,3 +38,29 @@ cc_library {
     ],
     export_include_dirs: ["."],
 }
+
+cc_library {
+    name: "libgptutils",
+    vendor: true,
+    recovery_available: true,
+    shared_libs: [
+        "libcutils",
+        "liblog",
+        "libz",
+    ],
+    cflags: [
+        "-Wall",
+        "-Werror",
+        "-Wunused-variable",
+    ],
+    srcs: [
+        "gpt-utils.cpp",
+        "sparse_crc32.cpp",
+    ],
+    owner: "qti",
+    header_libs: [
+        "device_kernel_headers",
+    ],
+    export_include_dirs: ["."],
+}
+

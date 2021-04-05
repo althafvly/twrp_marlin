@@ -19,7 +19,8 @@
 # Everything in this directory will become public
 
 ifeq ($(TARGET_PREBUILT_KERNEL),)
-    LOCAL_KERNEL := device/google/marlin-kernel/Image.lz4-dtb
+    LOCAL_KERNEL := device/google/marlin/Image.gz-dtb
+    BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 else
 LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
 endif
@@ -323,7 +324,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Write Manufacturer & Model information in created media files.
 # IMPORTANT: ONLY SET THIS PROPERTY TO TRUE FOR PUBLIC DEVICES
-ifneq ($(filter aosp_sailfish% sailfish% aosp_marlin% marlin%, $(TARGET_PRODUCT)),)
+ifneq ($(filter omni_sailfish% sailfish% omni_marlin% marlin%, $(TARGET_PRODUCT)),)
 PRODUCT_PROPERTY_OVERRIDES += \
     media.recorder.show_manufacturer_and_model=true
 else
@@ -432,6 +433,14 @@ PRODUCT_PACKAGES += \
     update_engine \
     update_verifier
 
+# Enable update engine sideloading by including the static version of the
+# boot_control HAL and its dependencies.
+PRODUCT_STATIC_BOOT_CONTROL_HAL := \
+    bootctrl.msm8996 \
+    libgptutils \
+    libz \
+    libcutils
+
 PRODUCT_PACKAGES += \
     update_engine_sideload
 
@@ -506,12 +515,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.graphics.composer@2.1-impl:64 \
     android.hardware.graphics.composer@2.1-service
-
-# Boot control
-PRODUCT_PACKAGES += \
-    android.hardware.boot@1.0-impl:64 \
-    android.hardware.boot@1.0-impl.recovery:64 \
-    android.hardware.boot@1.0-service
 
 # Library used for VTS tests  (only for userdebug and eng builds)
 ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
@@ -590,7 +593,7 @@ endif
 
 # b/35633646
 # Statically linked toybox for modprobe in recovery mode
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     toybox_static
 
 # b/30349163
@@ -641,3 +644,29 @@ PRODUCT_PACKAGES_DEBUG += a_sns_test
 # Write flags to the vendor space in /misc partition.
 PRODUCT_PACKAGES += \
     misc_writer
+
+PRODUCT_COPY_FILES += \
+    device/google/marlin/recovery/root/system/etc/twrp.fstab:recovery/root/system/etc/twrp.fstab \
+    device/google/marlin/recovery/root/system/bin/qseecomd:recovery/root/system/bin/qseecomd \
+    device/google/marlin/recovery/root/system/bin/android.hardware.keymaster@3.0-service:recovery/root/system/bin/android.hardware.keymaster@3.0-service \
+    device/google/marlin/recovery/root/system/bin/android.hardware.gatekeeper@1.0-service:recovery/root/system/bin/android.hardware.gatekeeper@1.0-service \
+    device/google/marlin/recovery/root/system/bin/android.hardware.boot@1.0-service:recovery/root/system/bin/android.hardware.boot@1.0-service \
+    device/google/marlin/recovery/root/vendor/etc/vintf/manifest.xml:recovery/root/vendor/etc/vintf/manifest.xml \
+    device/google/marlin/recovery/root/vendor/etc/vintf/compatibility_matrix.xml:recovery/root/vendor/etc/vintf/compatibility_matrix.xml \
+    device/google/marlin/recovery/root/vendor/lib64/hw/android.hardware.gatekeeper@1.0-impl.so:recovery/root/vendor/lib64/hw/android.hardware.gatekeeper@1.0-impl.so \
+    device/google/marlin/recovery/root/vendor/lib64/hw/android.hardware.keymaster@3.0-impl.so:recovery/root/vendor/lib64/hw/android.hardware.keymaster@3.0-impl.so \
+    device/google/marlin/recovery/root/vendor/lib64/hw/gatekeeper.msm8996.so:recovery/root/vendor/lib64/hw/gatekeeper.msm8996.so \
+    device/google/marlin/recovery/root/vendor/lib64/hw/keystore.msm8996.so:recovery/root/vendor/lib64/hw/keystore.msm8996.so \
+    device/google/marlin/recovery/root/vendor/lib64/hw/bootctrl.msm8996.so:recovery/root/vendor/lib64/hw/bootctrl.msm8996.so \
+    device/google/marlin/recovery/root/vendor/lib64/android.hardware.boot@1.0-impl.so:recovery/root/vendor/lib64/android.hardware.boot@1.0-impl.so \
+    device/google/marlin/recovery/root/vendor/lib64/android.hardware.confirmationui@1.0.so:recovery/root/vendor/lib64/android.hardware.confirmationui@1.0.so \
+    device/google/marlin/recovery/root/vendor/lib64/libpuresoftkeymasterdevice.so:recovery/root/vendor/lib64/libpuresoftkeymasterdevice.so \
+    device/google/marlin/recovery/root/vendor/lib64/libkeymaster3device.so:recovery/root/vendor/lib64/libkeymaster3device.so \
+    device/google/marlin/recovery/root/vendor/lib64/libdiag.so:recovery/root/vendor/lib64/libdiag.so \
+    device/google/marlin/recovery/root/vendor/lib64/libdrmfs.so:recovery/root/vendor/lib64/libdrmfs.so \
+    device/google/marlin/recovery/root/vendor/lib64/libdrmtime.so:recovery/root/vendor/lib64/libdrmtime.so \
+    device/google/marlin/recovery/root/vendor/lib64/libQSEEComAPI.so:recovery/root/vendor/lib64/libQSEEComAPI.so \
+    device/google/marlin/recovery/root/vendor/lib64/librpmb.so:recovery/root/vendor/lib64/librpmb.so \
+    device/google/marlin/recovery/root/vendor/lib64/libssd.so:recovery/root/vendor/lib64/libssd.so \
+    device/google/marlin/recovery/root/vendor/lib64/libgptutils.so:recovery/root/vendor/lib64/libgptutils.so \
+    device/google/marlin/recovery/root/init.recovery.usb.rc:root/init.recovery.usb.rc
