@@ -1,0 +1,19 @@
+# BoardConfig for for both marlin and sailfish
+
+VENDOR_PATH := device/google/marlin
+
+TARGET_RECOVERY_DEVICE_DIRS := \
+    $(DEVICE_PATH)
+
+TW_THEME := portrait_hdpi
+TW_INCLUDE_FB2PNG := true
+BOARD_SUPPRESS_SECURE_ERASE := true
+TARGET_RECOVERY_QCOM_RTC_FIX := true
+TW_INPUT_BLACKLIST := "hbtp_vm"
+TW_DEFAULT_BRIGHTNESS := "80"
+TW_EXCLUDE_DEFAULT_USB_INIT := true
+AB_OTA_UPDATER := true
+TWRP_INCLUDE_LOGCAT := true
+TARGET_USES_LOGD := true
+TW_USE_TOOLBOX := true
+BOARD_VNDK_RUNTIME_DISABLE := true

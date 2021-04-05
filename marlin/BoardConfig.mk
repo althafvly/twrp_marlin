@@ -3,6 +3,9 @@
 # Product-specific compile-time definitions
 #
 
+# Allow TWRP config to override others
+-include device/google/marlin/BoardConfigCommon.mk
+
 TARGET_BOARD_PLATFORM := msm8996
 TARGET_BOOTLOADER_BOARD_NAME := marlin
 TARGET_BOARD_INFO_FILE := device/google/marlin/marlin/board-info.txt
@@ -125,6 +128,7 @@ TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
 TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linux-android-
 TARGET_USES_UNCOMPRESSED_KERNEL := false
+LZMA_RAMDISK_TARGETS := recovery,boot
 
 MAX_EGL_CACHE_KEY_SIZE := 12*1024
 MAX_EGL_CACHE_SIZE := 2048*1024
@@ -177,7 +181,7 @@ HAVE_SYNAPTICS_DSX_FW_UPGRADE := true
 # Enable MDTP (Mobile Device Theft Protection)
 TARGET_USE_MDTP := true
 
-TARGET_BOARD_KERNEL_HEADERS := device/google/marlin/kernel-headers
+TARGET_BOARD_KERNEL_HEADERS := hardware/qcom/msm8998/kernel-headers
 
 # Install odex files into the other system image
 BOARD_USES_SYSTEM_OTHER_ODEX := true
